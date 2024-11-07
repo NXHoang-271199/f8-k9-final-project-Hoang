@@ -1,4 +1,4 @@
-version: '3'
+#version: '3'
 
 services:
 #  db:
@@ -13,9 +13,7 @@ services:
       - './api:/app/api'
     ports:
       - '3000:3000'
-      - '2500:3500'
-      - '2001:3001'
-    command: ['npm', 'run', 'start']
+    command: ['npm', 'run', 'start:dev']
 #    command:
 #      - npm
 #      - run
