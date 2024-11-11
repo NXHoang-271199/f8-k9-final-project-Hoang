@@ -43,10 +43,7 @@ update store set active = false where id = 5;
 select store.id,
        store.name        as store,
        store.location,
-       case
-           when vendor.id = 1 then json_build_object('id', vendor.id, 'name', vendor.name)
-           else null end as vendor
+       json_build_object('id', vendor.id, 'name', vendor.name) as vendor
 from store
-         join vendor on vendor.id = store.vendor_id
-;
+         join vendor on vendor.id = store.vendor_id;
 
