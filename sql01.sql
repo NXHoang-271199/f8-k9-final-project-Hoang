@@ -70,13 +70,113 @@ drop table if exists employee cascade;
 create table if not exists employee
 (
     id          bigserial,
+    store_id    int,
     name        text,
     salary      int,
     constraint pkey_employee primary key (id)
 );
+alter table employee add column active bool default true;
 
-insert into employee (name, salary)
-values ('Hoang', 50),
-       ('Hoan', 60),
-       ('SOn', 40),
-       ('Hoan', 40);
+insert into employee (store_id, name, salary)
+values (1, 'Hoang', 50),
+       (1, 'Hoan', 60),
+       (2, 'SOn', 40),
+       (3, 'Hoan', 40),
+       (6, 'Hoan', 40);
+
+select * from employee;
+-- delete id = 1
+update employee set active = false where id = 4;
+
+explain analyse select name, count(name), sum(salary) from employee where employee.salary > 40 group by name;
+-- Hoan, 1, 60
+-- Hoang,1, 50
+-- 26.65..28.44
+
+explain analyse select name, count(name), sum(salary) as salary from employee group by name having sum(salary) > 40;
+-- Hoan, 2, 100
+-- Hoang,1, 50
+-- 29.43..31.93
+
+-- lay ds nv dang lam cho cty nay
+select * from employee where active;
+select * from employee where true group by id having employee.active;
+
+
+select vendor_id,
+       json_agg(
+               json_build_object(
+                       'id', store.id,
+                       'name', store.name,
+                       'employees': json_agg(
+                            json_build_object(
+                                'id', employee.id,
+                                'name', employee.name,
+                            )
+                       )
+               )
+       ) as stores
+from store group by vendor_id;
+
+-- vendor id, vendor name, stores [{id, name}, {id, name}]
+-- cost=122.03..25189.73
+explain analyse select vendor.id,
+       vendor.name ,
+       json_agg(
+               json_build_object(
+                       'id', store.id,
+                       'name', store.name,
+                       'employees', (
+                            select json_agg(
+                               json_build_object('id', employee.id, 'name', employee.name))
+                            from employee where employee.store_id = store.id
+                            )
+               )
+       ) as stores
+from vendor
+join store on store.vendor_id = vendor.id
+join employee on employee.store_id = store.id
+group by vendor.id;
+
+-- 1, "The gioi di dong", "{{id: 1}, {id: 2}}"
+
+explain analyse select * from store where vendor_id in (select id from vendor where name = 'Dien may xanh');
+
+explain analyse select * from store
+join vendor on store.vendor_id = vendor.id
+where vendor.name = 'Dien may xanh';
+
+
+select * from store where vendor_id in (1);
+select * from vendor;
+
+-- cost=81.99..82.04
+explain analyse
+with
+    stores as (
+        select store.id,
+               store.name,
+               store.vendor_id,
+               json_agg(
+                       json_build_object(
+                               'id', employee.id,
+                               'name', employee.name
+                       )
+               ) as employees
+        from store
+                 join employee on employee.store_id = store.id
+        group by store.id, store.name
+    )
+
+select vendor.id,
+       vendor.name,
+       json_agg(
+            json_build_object(
+                'id', stores.id,
+                'name', stores.name,
+                'employees', stores.employees
+            )
+       )
+from vendor
+join stores on stores.vendor_id = vendor.id
+group by vendor.id, vendor.name;
