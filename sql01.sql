@@ -45,5 +45,38 @@ select store.id,
        store.location,
        json_build_object('id', vendor.id, 'name', vendor.name) as vendor
 from store
-         join vendor on vendor.id = store.vendor_id;
+    join vendor on vendor.id = store.vendor_id;
 
+-- group function
+-- count, sum, array funcs
+
+select * from store order by vendor_id, id desc limit 2;
+
+select count(id) from store; -- 5
+select sum(id) from store; -- 17
+
+select name, location from store;
+select location, array_agg(name) from store group by location;
+select vendor_id,
+       json_agg(
+               json_build_object('id', store.id, 'name', store.name)
+       ) as stores
+from store group by vendor_id;
+
+-- 2,"{{id: 3}, {id:6}}"
+-- 1,"{{id: 1}, {id: 2}, {id: 5}}"
+
+drop table if exists employee cascade;
+create table if not exists employee
+(
+    id          bigserial,
+    name        text,
+    salary      int,
+    constraint pkey_employee primary key (id)
+);
+
+insert into employee (name, salary)
+values ('Hoang', 50),
+       ('Hoan', 60),
+       ('SOn', 40),
+       ('Hoan', 40);
