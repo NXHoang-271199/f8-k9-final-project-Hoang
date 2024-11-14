@@ -10,22 +10,7 @@ class UserBody {
 
 
 
-@Controller('/app')
+@Controller('/')
 export class AppController {
   constructor(private readonly appService: AppService) {}
-
-  @Get()
-  get() {
-    return this.appService.getList();
-  }
-
-  @Post()
-  create(@Body() user: UserBody) {
-    return this.appService.create(user)
-  }
-
-  @Put('/:id')
-  update(@Param('id') id: number, @Body() user: UserBody) {
-    console.log(id, user)
-  }
 }
