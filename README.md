@@ -4,6 +4,7 @@ install project
 ```
 git clone https://github.com/Bangtx/f8-k9-final-project.git
 docker-compose run --rm api npm i
+npm i
 ```
 
 up
