@@ -18,6 +18,6 @@ export class VendorService {
     }
 
     update(id, vendor) {
-        return 'update';
+        return 'update vendor 2';
     }
 }
