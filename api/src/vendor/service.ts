@@ -16,4 +16,8 @@ export class VendorService {
         vendors.push({...vendor, id: 2})
         return vendor
     }
+
+    update(id, vendor) {
+        return 'update vendor'
+    }
 }
