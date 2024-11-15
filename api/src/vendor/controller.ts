@@ -26,7 +26,7 @@ export class VendorController {
     @Put(':id')
     update(@Param('id') id: number, @Body() vendor: UpdateDto) {
         console.log(id, vendor)
-        return "update vendor"
+        return this.vendorService.update(id, vendor)
     }
 
     @Delete(':id')
