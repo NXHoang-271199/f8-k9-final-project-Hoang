@@ -13,6 +13,8 @@ services:
       - './api:/app/api'
     ports:
       - '3000:3000'
+    depends_on:
+      - db
     command: ['npm', 'run', 'start:dev']
 #    command:
 #      - npm

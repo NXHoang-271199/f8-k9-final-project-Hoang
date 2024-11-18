@@ -1,20 +1,21 @@
-import {vendors} from './entity'
+import {Vendor} from './entity'
 import {Injectable} from "@nestjs/common";
 import {CreateDto} from "./dto";
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class VendorService {
+
     getList() {
-        return vendors
+        return 1
     }
 
     getOne(id: number) {
-        return vendors.find(vendor => vendor.id === id)
+        return 1
     }
 
     create(vendor) {
-        vendors.push({...vendor, id: 2})
-        return vendor
+        return 1
     }
 
     update(id, vendor) {
