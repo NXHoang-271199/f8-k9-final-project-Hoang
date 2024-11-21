@@ -30,7 +30,11 @@ export class VendorService {
     }
 
     create(vendor) {
-        return 1
+        const vendorEntity = new Vendor()
+        vendorEntity.name = 'vendor test thoi'
+        vendorEntity.active = true
+
+        return this.vendorRepository.save(vendorEntity)
     }
 
     update(id, vendor) {
