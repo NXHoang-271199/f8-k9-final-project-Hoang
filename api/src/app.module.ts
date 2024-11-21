@@ -2,8 +2,10 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import {VendorModule} from "./vendor/module";
+import {StoreModule} from "./store/module";
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Vendor } from './vendor/entity'
+import { Store } from './store/entity'
 
 @Module({
   imports: [
@@ -14,10 +16,11 @@ import { Vendor } from './vendor/entity'
       username: 'postgres',
       password: 'postgres',
       database: 'default',
-      entities: [Vendor],
+      entities: [Vendor, Store],
       synchronize: true,
     }),
-    VendorModule
+    VendorModule,
+    StoreModule
   ],
   controllers: [AppController],
   providers: [AppService],
