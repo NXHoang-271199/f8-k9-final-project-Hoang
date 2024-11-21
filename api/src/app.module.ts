@@ -18,6 +18,7 @@ import { Store } from './store/entity'
       database: 'default',
       entities: [Vendor, Store],
       synchronize: true,
+      logging: true
     }),
     VendorModule,
     StoreModule

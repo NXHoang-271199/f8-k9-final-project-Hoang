@@ -1,11 +1,15 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
+import {Entity, Column, PrimaryGeneratedColumn, ManyToOne} from "typeorm"
 import {User} from '../user/entity'
+import {Vendor} from '../vendor/entity'
 
 @Entity()
 export class Store extends User {
 
     @Column({
-        nullable: true
+        nullable: true,
+        name: 'vendor_id'
     })
     vendorId: number
+    // @ManyToOne(() => Vendor, (vendor) => vendor.stores)
+    // vendor: Vendor
 }
