@@ -1,7 +1,7 @@
 import {Base} from '../base/entity'
 import {Column} from "typeorm";
 
-export class User extends Base {
+export abstract class User extends Base {
 
     @Column({
         nullable: true
