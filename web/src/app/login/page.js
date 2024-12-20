@@ -1,3 +1,4 @@
+'use client'
 import { FInput, FButton } from "../../component";
 import Link from "next/link";
 export default function (){
@@ -8,9 +9,9 @@ export default function (){
                 <p className="text-zinc-400">Create an acount or login to join your orders</p>
             </div>
             <div className="flex flex-col items-center justify-center ">
-                <FInput lable={'username'}/>
-                <FInput lable={'password'}/>
-                <FButton />
+                <FInput label='username' />
+                <FInput label={'password'}/>
+                <FButton content={'Submit'} width={310}/>
                 <Link className="text-zinc-400" href={'#'}>Forgot your password</Link>
             </div>
             <div className="absolute bottom-10 left-0 right-0">
